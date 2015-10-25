@@ -64,5 +64,9 @@ someFunc = do
   images <- catMaybes <$> mapConcurrently process urls
   let sortedImages = sortOn snd images
   let output = unlines $ fmap (\(url, _) -> "<img src=\"" ++ url ++ "\">") sortedImages
-  writeFile "output.html" output
+  let style = "<style>\n"
+           ++ "  img {float: left; width: 150px; height: 150px;}\n"
+           ++ "  img:nth-child(6n+1) {clear: both;}\n"
+           ++ "</style>\n"
+  writeFile "output.html" $ style ++ output
   return ()
